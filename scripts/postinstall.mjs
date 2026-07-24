@@ -5,22 +5,42 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const patchesDir = join(__dirname, '..', 'patches')
 
+/**
+ * Convert pnpm patch filename to npm package directory name.
+ * pnpm convention:
+ *   @scope__name@version.patch  -> @scope/name
+ *   name@version.patch           -> name
+ */
+function patchFilenameToPackage(filename) {
+  const base = filename.replace(/\.patch$/, '')
+  // Split on last @ to separate package from version
+  const lastAt = base.lastIndexOf('@')
+  if (lastAt === -1) return null
+  const pkg = base.slice(0, lastAt)
+  // Convert __ back to / for scoped packages
+  return pkg.replace(/__/g, '/')
+}
+
 function applyPatch(patchFile) {
   const content = readFileSync(patchFile, 'utf-8')
   const lines = content.split('\n')
 
-  let filePath = ''
+  const pkgName = patchFilenameToPackage(patchFile.split('/').pop())
+  if (!pkgName) {
+    console.warn(`[postinstall] Could not parse package name from: ${patchFile}`)
+    return
+  }
+
+  let relPath = ''
   const hunks = []
   let currentHunk = null
 
   for (const line of lines) {
     if (line.startsWith('--- a/')) {
-      filePath = line.slice(6).trim()
-    } else if (line.startsWith('+++ b/')) {
-      // use the target path from b/ (it's the same as a/ usually)
+      relPath = line.slice(6).trim()
     } else if (line.startsWith('@@ ')) {
       if (currentHunk) hunks.push(currentHunk)
-      currentHunk = { oldLines: [], newLines: [], offset: 0 }
+      currentHunk = { oldLines: [], newLines: [] }
     } else if (currentHunk) {
       if (line.startsWith('-')) {
         currentHunk.oldLines.push(line.slice(1))
@@ -34,35 +54,35 @@ function applyPatch(patchFile) {
   }
   if (currentHunk) hunks.push(currentHunk)
 
-  if (!filePath) {
+  if (!relPath) {
     console.warn(`[postinstall] Could not determine target file in patch: ${patchFile}`)
     return
   }
 
-  // Try to find the target file in node_modules
-  const modulePath = join(process.cwd(), 'node_modules', filePath)
+  const modulePath = join(process.cwd(), 'node_modules', pkgName, relPath)
   if (!existsSync(modulePath)) {
     console.warn(`[postinstall] Target file not found: ${modulePath}`)
     return
   }
 
   let source = readFileSync(modulePath, 'utf-8')
+  let applied = false
 
   for (const hunk of hunks) {
     const oldText = hunk.oldLines.join('\n')
     const newText = hunk.newLines.join('\n')
     if (source.includes(oldText)) {
       source = source.replace(oldText, newText)
-      console.log(`[postinstall] Applied patch hunk in ${filePath}`)
-    } else if (source.includes(newText)) {
-      console.log(`[postinstall] Patch already applied in ${filePath}`)
-    } else {
-      console.warn(`[postinstall] Could not find hunk in ${filePath}, skipping`)
+      applied = true
+    } else if (!source.includes(newText)) {
+      console.warn(`[postinstall] Could not find hunk in ${pkgName}/${relPath}, skipping`)
     }
   }
 
-  writeFileSync(modulePath, source, 'utf-8')
-  console.log(`[postinstall] Patched: ${filePath}`)
+  if (applied) {
+    writeFileSync(modulePath, source, 'utf-8')
+    console.log(`[postinstall] Patched: ${pkgName}/${relPath}`)
+  }
 }
 
 // Apply patches
@@ -76,14 +96,4 @@ for (const pf of patchFiles) {
   if (existsSync(pf)) {
     applyPatch(pf)
   }
-}
-
-// simple-git-hooks
-try {
-  const { default: simpleGitHooks } = await import('simple-git-hooks')
-  simpleGitHooks()
-  console.log('[postinstall] simple-git-hooks configured')
-}
-catch {
-  console.warn('[postinstall] simple-git-hooks not available')
 }
