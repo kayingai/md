@@ -59,6 +59,17 @@
   "lint-staged": {
     "*": "eslint --fix"
   },
+  "trustedDependencies": [
+    "@vscode/vsce-sign",
+    "core-js",
+    "esbuild",
+    "keytar",
+    "sharp",
+    "simple-git-hooks",
+    "spawn-sync",
+    "vue-demi",
+    "workerd"
+  ],
   "overrides": {
     "@codemirror/state": "6.7.1",
     "@codemirror/view": "6.43.6",
