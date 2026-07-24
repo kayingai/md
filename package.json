@@ -21,7 +21,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "bun run --cwd apps/web build && rm -rf dist && mv apps/web/dist dist",
+    "build": "bun install && bun run --cwd apps/web build && rm -rf dist && mv apps/web/dist dist",
     "start": "bun run --cwd apps/web dev",
     "web": "bun run --cwd apps/web",
     "vscode": "bun run --cwd apps/vscode",
