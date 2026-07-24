@@ -16,7 +16,7 @@
 | `@doocs/md-cli`  | `packages/md-cli`     | 已发布 npm CLI（Express 静态服务）                                                      |
 | `@md/mcp-server` | `packages/mcp-server` | MCP 服务（`render_markdown` 等工具）                                                    |
 
-独立示例（不在 pnpm workspace 内）：
+独立示例（不在 bun workspace 内）：
 
 | 示例              | 路径                                   | 说明                    |
 | ----------------- | -------------------------------------- | ----------------------- |

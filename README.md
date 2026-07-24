@@ -83,33 +83,33 @@
 nvm i && nvm use
 
 # 安装依赖
-pnpm i
+bun install
 
 # 启动开发模式，访问 http://localhost:5173/md/
-pnpm web dev
+bun run web dev
 
 # 构建，部署在 /md 路径下
-pnpm web build
+bun run web build
 
 # 构建，部署在根路径下
-pnpm web build:h5-netlify
+bun run web build:h5-netlify
 
 # Chrome 扩展开发模式
 # 启动后在 chrome://extensions/ 开启开发者模式，加载 apps/web/.output/chrome-mv3-dev 目录
-pnpm web ext:dev
+bun run web ext:dev
 
 # 打包 Chrome 扩展
-pnpm web ext:zip
+bun run web ext:zip
 
 # 打包 Firefox 扩展，输出至 apps/web/.output/md-{version}-firefox.zip
-pnpm web firefox:zip
+bun run web firefox:zip
 
 # 打包 uTools 插件，输出至 apps/utools/release/md-utools-v{version}.zip
-pnpm utools:package
+bun run utools:package
 
 # Cloudflare Workers 开发与部署
-pnpm web wrangler:dev
-pnpm web wrangler:deploy
+bun run web wrangler:dev
+bun run web wrangler:deploy
 ```
 
 ## 私有化部署

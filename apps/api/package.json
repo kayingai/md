@@ -15,13 +15,13 @@
   },
   "dependencies": {
     "hono": "^4.12.31",
-    "uuid": "catalog:"
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "catalog:",
-    "@types/node": "catalog:",
-    "typescript": "catalog:",
-    "vitest": "catalog:",
-    "wrangler": "catalog:"
+    "@cloudflare/workers-types": "^5.20260723.1",
+    "@types/node": "^26.1.1",
+    "typescript": "~6.0.3",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.113.0"
   }
 }

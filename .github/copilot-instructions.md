@@ -1,24 +1,26 @@
 # Copilot Instructions
 
-This repository is a pnpm monorepo containing a Vue 3 web application, a VSCode extension, and a core markdown rendering library.
+This repository is a bun monorepo containing a Vue 3 web application, a VSCode extension, and a core markdown rendering library.
 
 ## Build, Test, and Lint
 
 ### Global Commands
-- **Install Dependencies:** `pnpm install`
-- **Lint (ESLint + Prettier):** `pnpm run lint`
-- **Type Check (Vue/TS):** `pnpm run type-check`
+- **Install Dependencies:** `bun install`
+- **Lint (ESLint + Prettier):** `bun run lint`
+- **Type Check (Vue/TS):** `bun run type-check`
 
 ### Web App (@md/web)
-- **Development Server:** `pnpm web dev`
-- **Build for Production:** `pnpm web build`
-- **Build Browser Extension:** `pnpm web ext:zip` (uses WXT)
+- **Development Server:** `bun run --cwd apps/web dev`
+- **Build for Production:** `bun run --cwd apps/web build`
+- **Build Browser Extension:** `bun run --cwd apps/web ext:zip` (uses WXT)
 
 ### VSCode Extension (@md/vscode)
-- **Development:** `pnpm vscode`
+- **Development:** `bun run --cwd apps/vscode`
 
 ### CLI (@doocs/md-cli)
-- **Build CLI:** `pnpm run build:cli`
+- **Build CLI:** `bun run build:cli`
+
+> Use `bun add` to add dependencies instead of `pnpm add`.
 
 ## High-Level Architecture
 

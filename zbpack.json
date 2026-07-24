@@ -1,4 +1,4 @@
 {
-  "build_command": "pnpm web build",
-  "output_dir": "apps/web/dist"
+  "build_command": "bun run build",
+  "output_dir": "dist"
 }

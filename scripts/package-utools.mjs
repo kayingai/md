@@ -48,7 +48,7 @@ async function main() {
   const version = pkg.version
 
   console.log(`> 构建 uTools 前端资源（version: ${version}）`)
-  await run(`pnpm`, [`--filter`, `@md/web`, `run`, `build:utools`], { cwd: rootDir })
+  await run(`bun`, [`run`, `--cwd`, `apps/web`, `build:utools`], { cwd: rootDir })
 
   await ensureFileExists(distDir, `apps/utools/dist`)
   await ensureFileExists(manifestPath, `apps/utools/plugin.json`)

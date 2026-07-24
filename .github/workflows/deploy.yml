@@ -24,18 +24,14 @@ jobs:
         with:
           node-version: 22
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6
-        with:
-          # Pin exact version: pnpm 11.12.0 self-update crashes in action-setup
-          # https://github.com/pnpm/action-setup/issues/276
-          version: 11.11.0
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
 
       - name: Run lint
-        run: pnpm run lint
+        run: bun run lint
 
       - name: Determine build command
         id: build-command
@@ -47,7 +43,7 @@ jobs:
           fi
 
       - name: Run build
-        run: pnpm web ${{ env.BUILD_COMMAND }}
+        run: bun run --cwd apps/web ${{ env.BUILD_COMMAND }}
 
       - name: Generate CNAME
         run: |
@@ -86,18 +82,14 @@ jobs:
         with:
           node-version: 22
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6
-        with:
-          # Pin exact version: pnpm 11.12.0 self-update crashes in action-setup
-          # https://github.com/pnpm/action-setup/issues/276
-          version: 11.11.0
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
 
       - name: Build for Cloudflare Workers
-        run: pnpm web build:h5-netlify
+        run: bun run --cwd apps/web build:h5-netlify
         env:
           CF_WORKERS: 1
 

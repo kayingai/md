@@ -8,8 +8,8 @@
 
 - **在线地址:** https://md.doocs.org
 - **Node 版本:** >= 22.22.2（`.nvmrc`: v22.22.2）
-- **包管理器:** pnpm（monorepo）
-- **npm 镜像:** https://registry.npmmirror.com（`.npmrc`）
+- **包管理器:** bun（monorepo）
+- **npm 镜像:** https://registry.npmmirror.com（`bunfig.toml`）
 
 ## Monorepo 结构
 
@@ -32,47 +32,47 @@
 ### 根目录
 
 ```bash
-pnpm install          # 安装所有依赖
-pnpm start            # 等同于 `pnpm web dev`
-pnpm run lint         # ESLint --fix 全项目检查
-pnpm run type-check   # vue-tsc 类型检查
-pnpm run build:cli    # 构建 web + 复制到 md-cli + npm pack
-pnpm run release:cli  # 通过 scripts/release.js 发布 CLI
-pnpm utools:package   # 打包 uTools 插件
-pnpm run inspector    # node-modules-inspector 查看依赖树
-pnpm link-claude-skills  # 链接 .claude/skills → .agents/skills
+bun install          # 安装所有依赖
+bun start            # 等同于 `bun run --cwd apps/web dev`
+bun run lint         # ESLint --fix 全项目检查
+bun run type-check   # vue-tsc 类型检查
+bun run build:cli    # 构建 web + 复制到 md-cli + npm pack
+bun run release:cli  # 通过 scripts/release.js 发布 CLI
+bun run utools:package   # 打包 uTools 插件
+bun run inspector    # node-modules-inspector 查看依赖树
+bun run link-claude-skills  # 链接 .claude/skills → .agents/skills
 ```
 
 ### Web 应用 (`@md/web`)
 
 ```bash
-pnpm web dev          # 启动 Vite 开发服务器
-pnpm web build        # 生产构建 + 类型检查
-pnpm web build:h5-netlify   # 构建用于 Netlify 根目录部署
-pnpm web build:analyze      # 构建并生成 rollup-plugin-visualizer 分析
-pnpm web ext:dev      # WXT Chrome 扩展开发模式
-pnpm web ext:zip      # 打包 Chrome 扩展
-pnpm web firefox:dev  # WXT Firefox 扩展开发模式
-pnpm web firefox:zip  # 打包 Firefox 扩展
-pnpm web wrangler:dev    # Cloudflare Workers 开发
-pnpm web wrangler:deploy   # Cloudflare Workers 部署
+bun run --cwd apps/web dev          # 启动 Vite 开发服务器
+bun run --cwd apps/web build        # 生产构建 + 类型检查
+bun run --cwd apps/web build:h5-netlify   # 构建用于 Netlify 根目录部署
+bun run --cwd apps/web build:analyze      # 构建并生成 rollup-plugin-visualizer 分析
+bun run --cwd apps/web ext:dev      # WXT Chrome 扩展开发模式
+bun run --cwd apps/web ext:zip      # 打包 Chrome 扩展
+bun run --cwd apps/web firefox:dev  # WXT Firefox 扩展开发模式
+bun run --cwd apps/web firefox:zip  # 打包 Firefox 扩展
+bun run --cwd apps/web wrangler:dev    # Cloudflare Workers 开发
+bun run --cwd apps/web wrangler:deploy   # Cloudflare Workers 部署
 ```
 
 ### VSCode 扩展
 
 ```bash
-pnpm vscode compile   # webpack 编译
-pnpm vscode watch     # webpack 监听
-pnpm vscode build     # 生产 webpack 构建
-pnpm vscode package   # vsce 打包
+bun run --cwd apps/vscode compile   # webpack 编译
+bun run --cwd apps/vscode watch     # webpack 监听
+bun run --cwd apps/vscode build     # 生产 webpack 构建
+bun run --cwd apps/vscode package   # vsce 打包
 ```
 
 ### CLI & MCP
 
 ```bash
-pnpm cli <cmd>        # 在 @doocs/md-cli 中执行命令
-pnpm mcp <cmd>        # 在 @md/mcp-server 中执行命令（render_markdown 等 MCP 工具）
-pnpm mcp dev          # MCP Server 监听模式
+bun run --cwd packages/md-cli <cmd>        # 在 @doocs/md-cli 中执行命令
+bun run --cwd packages/mcp-server <cmd>    # 在 @md/mcp-server 中执行命令（render_markdown 等 MCP 工具）
+bun run --cwd packages/mcp-server dev      # MCP Server 监听模式
 ```
 
 `@md/mcp-server` 通过 stdio 暴露 `render_markdown`、`list_themes`、`list_colors` 等工具，配置见 [packages/mcp-server/README.md](./packages/mcp-server/README.md)、[`.vscode/mcp.json`](./.vscode/mcp.json) 与 [`.cursor/mcp.json`](./.cursor/mcp.json)。
@@ -119,33 +119,22 @@ Web 主应用与部分浏览器扩展 UI 支持 **zh-CN**、**zh-TW**、**en-US*
 ## Lint 与格式化
 
 - **ESLint:** `@antfu/eslint-config` + Vue + TypeScript + formatter
-- **Prettier:** 固定版本 `2.8.8`（通过 `pnpm-workspace.yaml` 的 `overrides` 强制）
+- **Prettier:** 固定版本 `2.8.8`（通过 `package.json` 的 `overrides` 强制）
 - **Pre-commit 钩子:** `lint-staged` 对所有文件执行 `eslint --fix`
 - 规则：不使用分号，关闭 `no-unused-vars`、`no-console`、`no-debugger`
 - **代码注释：** 统一英文。保留非显而易见的 why / 约束 / 兼容性说明；删除复述下一行代码的噪音注释。勿改动 `i18n/messages` 等用户可见文案。
 
 ## 依赖管理
 
-这是一个 pnpm monorepo，`pnpm-workspace.yaml` 中包含大量安全覆盖（overrides）。
+这是一个 bun monorepo，`package.json` 中包含大量安全覆盖（overrides）。
 
 ### 升级依赖
 
-1. **共享版本用 catalog** — 跨包共用的工具链版本集中在 `pnpm-workspace.yaml` 的 `catalog`（`typescript`、`vitest`、`wrangler`、`@types/node`、`marked`、`@codemirror/state|view` 等）；workspace 内各 `package.json` 用 `"catalog:"` 引用。**仓库根 `package.json` 因 `private: false` 可被 npm 消费，须写普通 semver，勿用 `catalog:`。**包专属依赖可继续写版本号（`pnpm/json-enforce-catalog` 已关闭）
-2. **Prettier 必须固定在 `2.8.8`** — 通过 catalog + `overrides.prettier` 强制（根 package 直接写 `2.8.8`）
-3. **Patch 文件：** 如果打了 patch 的依赖升级了，必须同步更新 `patches/` 中对应的 patch 文件：
-   - `@codemirror/view` → `patches/@codemirror__view@6.43.6.patch`（导出 `MeasureRequest` 接口，修复 macOS 上 Alt+Shift 快捷键处理）
-   - `front-matter` → `patches/front-matter@4.0.2.patch`
-   - `juice` → `patches/juice@12.1.1.patch`（为 `parseCSS` 返回值增加空值检查）
-4. 更新 `pnpm-workspace.yaml` 中的 `patchedDependencies` 以匹配新版本
-5. 运行 `pnpm install` 重新生成 `pnpm-lock.yaml`；可用 `pnpm dedupe` 收敛可合并的间接依赖
+跨包共用的工具链版本（`typescript`、`vitest`、`wrangler`、`@types/node`、`marked` 等）直接在各 `package.json` 中写入具体版本号（无 `catalog:` 机制）。
 
 ### 安全覆盖
 
-`pnpm-workspace.yaml` 的 `overrides` 部分强制了存在漏洞的间接依赖的最低版本（ajv、dompurify、undici、minimatch 等）。除非上游已修复漏洞，否则不要移除这些覆盖。
-
-### allowBuilds
-
-`pnpm-workspace.yaml` 包含 `allowBuilds` 列表，用于需要原生构建脚本的依赖（`esbuild`、`sharp`、`keytar`、`workerd` 等）。新增需要原生构建的依赖可能需要添加到此列表。
+`package.json` 的 `overrides` 部分强制了存在漏洞的间接依赖的最低版本（ajv、dompurify、undici、minimatch 等）。除非上游已修复漏洞，否则不要移除这些覆盖。
 
 ## Git 规范
 

@@ -7,13 +7,13 @@ Exposes the `doocs/md` markdown rendering engine and AI service configuration to
 ## Prerequisites
 
 - **Node.js** ≥ 22.22.2（与 monorepo 根目录 `.nvmrc` 一致）
-- **pnpm** ≥ 9（monorepo workspace）
+- **bun** 1.2（bun monorepo workspace）
 - Clone the monorepo and install dependencies:
 
 ```bash
 git clone https://github.com/doocs/md.git
 cd md
-pnpm install
+bun install
 ```
 
 ## Tools
@@ -160,10 +160,10 @@ render_markdown 支持哪些 Markdown 扩展？给我每个扩展的示例写法
 
 ```bash
 # Run server directly (connects to stdin/stdout — for manual testing)
-pnpm --filter @md/mcp-server start
+bun run --cwd packages/mcp-server start
 
 # Watch mode (auto-restart on changes)
-pnpm --filter @md/mcp-server dev
+bun run --cwd packages/mcp-server dev
 ```
 
 To test manually, use [MCP Inspector](https://github.com/modelcontextprotocol/inspector):

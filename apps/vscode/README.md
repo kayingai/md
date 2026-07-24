@@ -13,7 +13,7 @@
 
 ## 使用方法
 
-1. 在仓库根目录执行 `pnpm install`
+1. 在仓库根目录执行 `bun install`
 2. 打开任意 `.md` 文件
 3. 点击活动栏 **Markdown Preview** 图标，在侧边栏调整渲染选项
 4. 点击编辑器标题栏预览按钮，或运行命令 `Markdown Preview: Open Markdown Preview`
@@ -38,34 +38,34 @@
 ## 开发
 
 - **Node.js ≥ 22**
-- 在 monorepo 根目录安装依赖：`pnpm install`
+- 在 monorepo 根目录安装依赖：`bun install`
 
 ```sh
 # 在仓库根目录
-pnpm vscode watch      # webpack 监听编译
-pnpm vscode build      # 生产构建
-pnpm vscode test       # 渲染路径 smoke test
-pnpm vscode package    # 打包 .vsix
+bun run --cwd apps/vscode watch      # webpack 监听编译
+bun run --cwd apps/vscode build      # 生产构建
+bun run --cwd apps/vscode test       # 渲染路径 smoke test
+bun run --cwd apps/vscode package    # 打包 .vsix
 ```
 
 ### F5 调试
 
 **推荐打开 monorepo 根目录 `D:\repo\md`**（根目录 `.vscode/launch.json` 已配置好）。
 
-1. `pnpm install` && `pnpm vscode build`（首次或改 webpack 配置后）
+1. `bun install` && `bun run --cwd apps/vscode build`（首次或改 webpack 配置后）
 2. 按 `F5` 选择 **Run Extension**
 3. 在弹出的 **`[Extension Development Host]` 新窗口** 中打开 `.md` 文件
 4. 运行 `Open Markdown Preview` 或点击标题栏预览按钮
 
-改代码时另开终端跑 `pnpm vscode watch`，改完后在 Extension Development Host 窗口 `Developer: Reload Window`。
+改代码时另开终端跑 `bun run --cwd apps/vscode watch`，改完后在 Extension Development Host 窗口 `Developer: Reload Window`。
 
 ### 常见问题
 
 **`command 'markdown.preview' not found`** 或 **`no data provider registered`**
 
 - 在 **Extension Development Host 新窗口** 操作，不是原调试窗口
-- 先 **关闭所有正在调试的扩展窗口**，再重新 `pnpm vscode build`（避免 `extension.js` 被占用）
-- F5 后运行 `pnpm vscode test` 确认构建与预览路径正常
+- 先 **关闭所有正在调试的扩展窗口**，再重新 `bun run --cwd apps/vscode build`（避免 `extension.js` 被占用）
+- F5 后运行 `bun run --cwd apps/vscode test` 确认构建与预览路径正常
 - 若看不到 `activate` 日志，说明扩展加载失败，把完整错误贴出来
 
 ### 手动验证清单

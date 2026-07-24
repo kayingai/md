@@ -42,7 +42,6 @@ public/upload/**
 # Package manager lock file
 package-lock.json
 yarn.lock
-# pnpm-lock.yaml
 auto-imports.d.ts
 components.d.ts
 

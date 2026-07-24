@@ -83,34 +83,34 @@ Pull requests are welcome. You can also share ideas in [Discussions](https://git
 nvm i && nvm use
 
 # Install dependencies
-pnpm i
+bun install
 
 # Start the dev server, available at http://localhost:5173/md/
-pnpm web dev
+bun run web dev
 
 # Production build, served under /md/
-pnpm web build
+bun run web build
 
 # Production build, served at the root path
-pnpm web build:h5-netlify
+bun run web build:h5-netlify
 
 # Chrome extension dev mode
 # After starting, open chrome://extensions/, enable Developer mode,
 # then load the unpacked extension from apps/web/.output/chrome-mv3-dev
-pnpm web ext:dev
+bun run web ext:dev
 
 # Package the Chrome extension
-pnpm web ext:zip
+bun run web ext:zip
 
 # Package the Firefox extension — output: apps/web/.output/md-{version}-firefox.zip
-pnpm web firefox:zip
+bun run web firefox:zip
 
 # Package the uTools plugin — output: apps/utools/release/md-utools-v{version}.zip
-pnpm utools:package
+bun run utools:package
 
 # Cloudflare Workers development and deployment
-pnpm web wrangler:dev
-pnpm web wrangler:deploy
+bun run web wrangler:dev
+bun run web wrangler:deploy
 ```
 
 ## Self-hosting

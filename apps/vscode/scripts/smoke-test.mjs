@@ -2,7 +2,7 @@
  * Smoke test for the VSCode extension rendering path.
  * Verifies initRenderer options used by the extension produce expected HTML.
  *
- * Run from repo root: pnpm vscode test
+ * Run from repo root: bun run --cwd apps/vscode test
  */
 import { initRenderer } from '@md/core/renderer'
 import { modifyHtmlContent } from '@md/core/utils'

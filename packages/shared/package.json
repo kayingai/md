@@ -22,7 +22,7 @@
     "type-check": "tsc --noEmit"
   },
   "peerDependencies": {
-    "marked": "catalog:"
+    "marked": "^18.0.7"
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.20.3",
@@ -44,17 +44,17 @@
     "@codemirror/language": "^6.12.4",
     "@codemirror/lint": "^6.9.7",
     "@codemirror/search": "^6.7.1",
-    "@codemirror/state": "catalog:",
-    "@codemirror/view": "catalog:",
+    "@codemirror/state": "6.7.1",
+    "@codemirror/view": "6.43.6",
     "@fsegurai/codemirror-theme-vscode-dark": "^6.2.6",
     "@fsegurai/codemirror-theme-vscode-light": "^6.2.6",
     "@replit/codemirror-indentation-markers": "^6.5.3",
-    "uuid": "catalog:"
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
     "@md/config": "workspace:*",
-    "marked": "catalog:",
-    "typescript": "catalog:",
-    "vitest": "catalog:"
+    "marked": "^18.0.7",
+    "typescript": "~6.0.3",
+    "vitest": "^4.1.10"
   }
 }

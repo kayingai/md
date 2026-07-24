@@ -21,11 +21,11 @@
 ## 前置条件
 
 - **Node.js ≥ 22**
-- **pnpm ≥ 10**
+- **bun ≥ 1.2**
 
 ## 快速开始
 
-该项目为 pnpm monorepo 项目，使用 pnpm 管理依赖。
+该项目为 bun monorepo 项目，使用 bun 管理依赖。
 
 项目结构如下：
 
@@ -52,10 +52,10 @@ cd md
 git remote add upstream https://github.com/doocs/md.git
 
 # 3. 安装依赖
-pnpm install
+bun install
 
 # 4. 启动本地开发
-pnpm web dev
+bun run --cwd apps/web dev
 ```
 
 ## 开发流程
@@ -77,9 +77,9 @@ pnpm web dev
 4. 运行检查：
 
    ```bash
-   pnpm run lint        # ESLint + Prettier
-   pnpm run type-check  # TypeScript 类型检查
-   pnpm run web build       # 产物验证
+   bun run lint        # ESLint + Prettier
+   bun run type-check  # TypeScript 类型检查
+   bun run --cwd apps/web build       # 产物验证
    ```
 
 5. 提交并推送：
@@ -104,7 +104,7 @@ pnpm web dev
 ## 代码规范
 
 - 遵循项目自带的 **ESLint**、**Prettier** 与 **Stylelint** 配置。
-- 所有提交必须通过 `pnpm run lint` 检查，无警告、无错误。
+- 所有提交必须通过 `bun run lint` 检查，无警告、无错误。
 - 推荐在 IDE 中启用 **ESLint** 与 **Prettier** 自动修复。
 - **代码注释统一使用英文。** 只写非显而易见的 why / 约束 / 坑；删除复述代码的噪音注释。用户可见文案（i18n）不受此限制。
 

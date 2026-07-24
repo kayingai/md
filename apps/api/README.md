@@ -49,7 +49,7 @@ doocs/md 的后端 API，基于 **Cloudflare Workers + Hono + D1**，提供 GitH
 ### 1. 创建 D1 数据库
 
 ```bash
-pnpm api exec wrangler d1 create md-sync
+bun run --cwd apps/api exec wrangler d1 create md-sync
 ```
 
 把输出的 `database_id` 填入 [`wrangler.toml`](./wrangler.toml) 的 `database_id`。
@@ -57,8 +57,8 @@ pnpm api exec wrangler d1 create md-sync
 ### 2. 执行迁移
 
 ```bash
-pnpm api db:migrate:local    # 本地开发库
-pnpm api db:migrate:remote   # 生产库
+bun run --cwd apps/api db:migrate:local    # 本地开发库
+bun run --cwd apps/api db:migrate:remote   # 生产库
 ```
 
 ### 3. 配置 GitHub OAuth App
@@ -71,11 +71,11 @@ pnpm api db:migrate:remote   # 生产库
 ### 4. 设置密钥与变量
 
 ```bash
-pnpm api exec wrangler secret put GITHUB_CLIENT_ID
-pnpm api exec wrangler secret put GITHUB_CLIENT_SECRET
-pnpm api exec wrangler secret put JWT_SECRET     # 任意高强度随机串
-pnpm api exec wrangler secret put AFDIAN_API_TOKEN
-pnpm api exec wrangler secret put AFDIAN_WEBHOOK_TOKEN  # 可选：Webhook 路径密钥
+bun run --cwd apps/api exec wrangler secret put GITHUB_CLIENT_ID
+bun run --cwd apps/api exec wrangler secret put GITHUB_CLIENT_SECRET
+bun run --cwd apps/api exec wrangler secret put JWT_SECRET     # 任意高强度随机串
+bun run --cwd apps/api exec wrangler secret put AFDIAN_API_TOKEN
+bun run --cwd apps/api exec wrangler secret put AFDIAN_WEBHOOK_TOKEN  # 可选：Webhook 路径密钥
 ```
 
 `APP_URL`、`AFDIAN_USER_ID` 在 [`wrangler.toml`](./wrangler.toml) 的 `[vars]` 中配置。
@@ -93,7 +93,7 @@ pnpm api exec wrangler secret put AFDIAN_WEBHOOK_TOKEN  # 可选：Webhook 路�
 **GitHub（官方默认）**
 
 ```bash
-pnpm api exec wrangler secret put UPLOAD_GITHUB_TOKENS_BUCKETIO   # 逗号分隔 PAT
+bun run --cwd apps/api exec wrangler secret put UPLOAD_GITHUB_TOKENS_BUCKETIO   # 逗号分隔 PAT
 ```
 
 可选变量：`UPLOAD_GITHUB_USERNAME`、`UPLOAD_GITHUB_REPO_LIST`、`UPLOAD_GITHUB_BRANCH`、`UPLOAD_GITHUB_USE_CDN`。
@@ -123,12 +123,12 @@ pnpm api exec wrangler secret put UPLOAD_GITHUB_TOKENS_BUCKETIO   # 逗号分隔
 ### 6. 本地运行 / 部署
 
 ```bash
-pnpm api dev      # 本地 http://localhost:8787
-pnpm api deploy   # 部署到 Cloudflare
+bun run --cwd apps/api dev      # 本地 http://localhost:8787
+bun run --cwd apps/api deploy   # 部署到 Cloudflare
 ```
 
 > **Worker 改名迁移（md-sync → md-api）**：本服务的 Cloudflare worker 名已由 `md-sync` 更名为 `md-api`。
-> 若你此前部署过 `md-sync`，首次 `pnpm api deploy` 会创建全新的 `md-api` worker，需要在新 worker 上**重新设置所有 secret**
+> 若你此前部署过 `md-sync`，首次 `bun run --cwd apps/api deploy` 会创建全新的 `md-api` worker，需要在新 worker 上**重新设置所有 secret**
 > （见上方第 4 步），自定义域名 `md-api.doocs.org` 会指向新 worker；确认无误后可在 Cloudflare 控制台删除旧的 `md-sync` worker。
 > D1 数据库（资源名仍为 `md-sync`）按 `database_id` 绑定，数据不受影响。
 
